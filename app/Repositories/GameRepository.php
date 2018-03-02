@@ -79,8 +79,8 @@ class GameRepository implements GameInterface
                                     SUM(success_rate) as success_rate,team_id")->groupBy('team_id')->get();
                        }
                    ])->with([
-                        'scoreOfTeamB' => function ($query) {
-                            $query->selectRaw("SUM(score) as score,SUM(attack_count) as attack_count,SUM(assist) as assist,
+                'scoreOfTeamB' => function ($query) {
+                    $query->selectRaw("SUM(score) as score,SUM(attack_count) as attack_count,SUM(assist) as assist,
                             SUM(success_rate) as success_rate,team_id")->groupBy('team_id')->get();
                 }
             ])->get();
@@ -114,5 +114,69 @@ class GameRepository implements GameInterface
         ];
 
         Scores::insert($data);
+    }
+
+    public function UpdateTeamsScore()
+    {
+        $scoreArray = $this->makeScoreTeamArray();
+        $games = Game::all();
+        foreach ($games as $game) {
+            if ( !empty($scoreArray[ $game->teamA_id ]) and !empty($scoreArray[ $game->teamB_id ])) {
+                if ($scoreArray[ $game->teamA_id ] > $scoreArray[ $game->teamB_id ]) {
+                    $winningTeam = Teams::find($game->teamA_id);
+                    $loosingTeam = Teams::find($game->teamB_id);
+                    $winningTeamId = $game->teamA_id;
+                    $loosingTeamId = $game->teamB_id;
+                    $this->updateTeamsPointTable($winningTeam,
+                        $loosingTeam, $winningTeamId, $loosingTeamId);
+
+                } else {
+                    $winningTeam = Teams::find($game->teamB_id);
+                    $loosingTeam = Teams::find($game->teamA_id);
+                    $winningTeamId = $game->teamB_id;
+                    $loosingTeamId = $game->teamA_id;
+                    $this->updateTeamsPointTable($winningTeam,
+                        $loosingTeam, $winningTeamId, $loosingTeamId);
+                }
+            }
+        }
+    }
+
+    /**
+     * @return array
+     * nake array of key as team_id and sum of score as value
+     * so that comparison between two teas will be easy.
+     */
+    private function makeScoreTeamArray()
+    {
+        $scoreArray = [];
+        $scores = Scores::selectRaw('sum(score) as score,team_id')->groupBy('team_id')->get();
+        foreach ($scores as $score) {
+            $scoreArray[ $score->team_id ] = $score->score;
+        }
+
+        return $scoreArray;
+    }
+
+    /**
+     * @param $winningTeam
+     * @param $loosingTeam
+     * @param $winningTeamId
+     * @param $loosingTeamId
+     * @return array
+     */
+    private function updateTeamsPointTable($winningTeam, $loosingTeam, $winningTeamId, $loosingTeamId)
+    {
+        $updateDataArray = [
+            'total_matches' => $winningTeam->total_matches + 1,
+            'win'           => $winningTeam->win + 1,
+            'points'        => $winningTeam->points + 2
+        ];
+        $updateDataArrayLoosing = [
+            'total_matches' => $loosingTeam->total_matches + 1,
+            'loose'         => $loosingTeam->loose + 1
+        ];
+        Teams::where('id', $winningTeamId)->update($updateDataArray);
+        Teams::where('id', $loosingTeamId)->update($updateDataArrayLoosing);
     }
 }

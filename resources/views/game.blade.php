@@ -4,7 +4,7 @@
 <script src="{{asset('js/game.js')}}"></script>
 <div class="row" ng-controller="gameController"  ng-cloak>
     <h1></h1>
-    <button type="button" ng-click="startGame()" class="btn btn-primary" data-dismiss="modal">Start Game</button>
+    {{--<button type="button" ng-click="startGame()" class="btn btn-primary" data-dismiss="modal">Start Game</button>--}}
     <h1></h1>
     <div class="panel panel-default" ng-repeat = "game in games">
         <div class="panel-heading">Match @{{ $index+1 }}</div>
