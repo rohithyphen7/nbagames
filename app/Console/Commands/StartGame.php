@@ -43,7 +43,7 @@ class StartGame extends Command
      */
     public function handle(GameInterface $game)
     {
-        $teamArray = $this->beforeGamePreRequets($game);
+        $teamArray = $this->beforeGamePreRequest($game);
         $updateCount = 1;
         // 120 because i am giving sleep of 2 seconds
         // that means if all matches are gonna finish in 240 seconds than
@@ -54,7 +54,7 @@ class StartGame extends Command
             $updateCount++;
             sleep(2);
         }
-        if ($updateCount > 120) {
+        if ($updateCount >= 120) {
             $game->UpdateTeamsScore();
         }
     }
@@ -100,7 +100,7 @@ class StartGame extends Command
      * @param GameInterface $game
      * @return array
      */
-    private function beforeGamePreRequets(GameInterface $game)
+    private function beforeGamePreRequest(GameInterface $game)
     {
         $teamArray = $this->getTeamIdsArray();
         $this->truncateIfScoresExist();
