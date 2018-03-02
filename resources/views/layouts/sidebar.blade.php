@@ -5,10 +5,13 @@
                 <a href="{{ url('game') }}"><i class=""></i> On Going Matches</a>
             </li>
             <li>
-                <a href="{{ url('teams') }}"><i class=""></i> Teams Rankings</a>
+                <a href="{{ url('teams') }}"><i class=""></i> Teams Rankings Group Wise</a>
             </li>
             <li>
                 <a href="{{ url('topPlayersView') }}"><i class=""></i> Top Players</a>
+            </li>
+            <li>
+                <a href="{{ url('teamRanking') }}"><i class=""></i> OverAll Team Rankings</a>
             </li>
         </ul>
     </div>

@@ -26,6 +26,8 @@ Route::get('/getMatches', 'GameController@index');
 Route::get('/playingPlayers/{teamAId}/{teamBId}', 'TeamsController@getPlayers');
 Route::get('/topPlayersView', 'TeamsController@getTopPlayersView');
 Route::get('/getTopPlayers', 'TeamsController@getTopPlayers');
+Route::get('/teamRanking', 'TeamsController@teamRankingView');
+Route::get('/getTopTeams', 'TeamsController@getTopTeams');
 
 //Route::get('/startGame', function () {
 //    Artisan::queue('start:game');

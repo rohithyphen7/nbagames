@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'Game')
+@section('pageTitle', 'Game')
 @section('content')
 <script src="{{asset('js/game.js')}}"></script>
 <div class="row" ng-controller="gameController"  ng-cloak>

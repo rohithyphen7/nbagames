@@ -65,10 +65,24 @@ class TeamsController extends Controller
     }
 
     /**
-     *
+     *fet the top playes on basis of their point
      */
     public function getTopPlayers()
     {
         return $this->teamRepo->getTopPlayers();
+    }
+
+    public function teamRankingView()
+    {
+        return view('topTeams');
+    }
+
+    /**
+     * get the top teams on the basis of their score chart
+     */
+    public function getTopTeams()
+    {
+        return $this->teamRepo->getTopTeams();
+
     }
 }

@@ -19,4 +19,6 @@ interface TeamInterface
     public function getPlayingPlayers($teamId);
 
     public function getTopPlayers();
+
+    public function getTopTeams();
 }

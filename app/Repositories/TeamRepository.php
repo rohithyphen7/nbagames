@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Players;
 use App\Models\Teams;
 use App\Interfaces\TeamInterface;
+
 /**
  * Created by PhpStorm.
  * User: rohit
@@ -34,11 +35,12 @@ class TeamRepository implements TeamInterface
      * @return array
      * getting two teams data as per the listing of ongoing matches
      */
-    public function getPlayers($teamAId,$teamBId)
+    public function getPlayers($teamAId, $teamBId)
     {
         $teamA = $this->getPlayingPlayers($teamAId);
         $teamB = $this->getPlayingPlayers($teamBId);
-        return ['teamA'=>$teamA,'teamB'=>$teamB];
+
+        return ['teamA' => $teamA, 'teamB' => $teamB];
     }
 
     /**
@@ -57,10 +59,16 @@ class TeamRepository implements TeamInterface
 
     /**
      * to get the top 20 players
+     *
      * @return mixed
      */
     public function getTopPlayers()
     {
-         return Players::orderBy('points','desc')->take(20)->get();
+        return Players::orderBy('points', 'desc')->take(20)->get();
+    }
+
+    public function getTopTeams()
+    {
+        return Teams::orderBy('points', 'desc')->get();
     }
 }

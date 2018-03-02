@@ -1,5 +1,5 @@
 @extends('home')
-@section('title', 'Teams')
+@section('pageTitle', 'Teams')
 
 @section('content')
     <script src="{{asset('js/teams.js')}}">
