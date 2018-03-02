@@ -61,6 +61,6 @@ class TeamRepository implements TeamInterface
      */
     public function getTopPlayers()
     {
-         return Players::orderBy('points')->take(20)->get();
+         return Players::orderBy('points','desc')->take(20)->get();
     }
 }
