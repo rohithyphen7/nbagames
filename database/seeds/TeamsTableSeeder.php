@@ -28,9 +28,10 @@ class TeamsTableSeeder extends Seeder
                 $draw = $faker->numberBetween(0, 5);
                 $totalMatches = $win + $loose + $draw;
                 $points = 2 * $win;
+                $splitArray = explode(' ',trim($teamName));
                 Teams::insert([
                     'name'       => $teamName,
-                    'flag'       => str_random(10),
+                    'flag'       => $splitArray[0].'.png',
                     'group_id'   => $groupId,
                     'total_matches' => $totalMatches,
                     'win'           => $win,

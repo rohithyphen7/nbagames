@@ -26,7 +26,7 @@ return [
         'Dallas Mavericks'       => 2,
         'Houston Rockets'        => 2,
         'Memphis Grizzlies'      => 2,
-        'New Orleans Pelicans'   => 2,
+        'Orleans Pelicans'   => 2,
         'San Antonio Spurs'      => 2,
         'Atlanta Hawks'          => 2,
         'Charlotte Hornets'      => 2,
