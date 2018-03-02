@@ -8,6 +8,7 @@
 
 namespace App\Repositories;
 
+use App\Events\startGameEvent;
 use App\Models\Game;
 use App\Models\Teams;
 use App\Models\Scores;
@@ -72,28 +73,36 @@ class GameRepository implements GameInterface
     public function getMatches()
     {
         return Game::with('teamA')->with('teamB')
-                     ->with([
-                         'scoreOfTeamA' => function ($query) {
-                             $query->selectRaw("SUM(score) as score,SUM(attack_count) as attack_count,SUM(assist) as assist,SUM(success_rate) as success_rate,team_id")
-                                   ->groupBy('team_id')->get();
-                         }
-                     ])->with([
+                   ->with([
+                       'scoreOfTeamA' => function ($query) {
+                           $query->selectRaw("SUM(score) as score,SUM(attack_count) as attack_count,SUM(assist) as assist,
+                                    SUM(success_rate) as success_rate,team_id")->groupBy('team_id')->get();
+                       }
+                   ])->with([
                         'scoreOfTeamB' => function ($query) {
-                            $query->selectRaw("SUM(score) as score,SUM(attack_count) as attack_count,SUM(assist) as assist,SUM(success_rate) as success_rate,team_id")
-                                  ->groupBy('team_id')->get();
-                        }
-                    ])->get();
+                            $query->selectRaw("SUM(score) as score,SUM(attack_count) as attack_count,SUM(assist) as assist,
+                            SUM(success_rate) as success_rate,team_id")->groupBy('team_id')->get();
+                }
+            ])->get();
     }
 
+    /**
+     * its a trigger which start filling the score board
+     * keeping it hidden for the moment as the match will
+     * start with a camand line
+     * through a php artisan cammand
+     * php artisan start:match
+     */
     public function startGame()
     {
-        if(Scores::all()->count() >=1)
-        {
-            Scores::Truncate();
-        }
-        \Artisan::call('start:game');
+        event(new startGameEvent());
     }
 
+    /**
+     * @param $teamArray
+     * insert random data in score table in order to
+     * keep an illusion that match is going on
+     */
     public function playGame($teamArray)
     {
         $data = [

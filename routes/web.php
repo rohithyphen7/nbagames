@@ -25,6 +25,10 @@ Route::get('/game', 'GameController@setMatches');
 Route::get('/getMatches', 'GameController@index');
 Route::get('/playingPlayers/{teamAId}/{teamBId}', 'TeamsController@getPlayers');
 Route::get('/startGame', 'GameController@create');
+Route::get('/topPlayersView', 'TeamsController@getTopPlayersView');
+Route::get('/getTopPlayers', 'TeamsController@getTopPlayers');
+
+
 
 
 

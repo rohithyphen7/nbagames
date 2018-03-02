@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Teams;
-use Illuminate\Http\Request;
 use App\Interfaces\TeamInterface;
 
 class TeamsController extends Controller
@@ -15,14 +14,15 @@ class TeamsController extends Controller
      * GroupsController constructor.
      *
      * @param App /Repositories/TeamRepository $teamRepo
-     * perform Dependency Injection to a Interface which is implemented by a Repo
-     * Dependency injection also allow to typeCast the @param
-     * Following Repository pattern
+     *            perform Dependency Injection to a Interface which is implemented by a Repo
+     *            Dependency injection also allow to typeCast the @param
+     *            Following Repository pattern
      * @author Rohit N
      */
     public function __construct(TeamInterface $teamRepo)
     {
         $this->teamRepo = $teamRepo;
+        $this->middleware('auth');
     }
 
     /**
@@ -33,27 +33,6 @@ class TeamsController extends Controller
     public function index()
     {
         return view('teams');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -68,41 +47,28 @@ class TeamsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Teams $teams
-     * @return \Illuminate\Http\Response
+     * @param $teamAId
+     * @param $teamBId
+     * @return mixed
      */
-    public function edit(Teams $teams)
+    public function getPlayers($teamAId, $teamBId)
     {
-        //
+        return $this->teamRepo->getPlayers($teamAId, $teamBId);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Teams               $teams
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
-    public function update(Request $request, Teams $teams)
+    public function getTopPlayersView()
     {
-        //
+        return view('topPlayers');
     }
 
     /**
-     * Remove the specified resource from storage.
      *
-     * @param  \App\Teams $teams
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Teams $teams)
+    public function getTopPlayers()
     {
-        //
-    }
-
-    public function getPlayers($teamAId,$teamBId)
-    {
-        return $this->teamRepo->getPlayers($teamAId,$teamBId);
+        return $this->teamRepo->getTopPlayers();
     }
 }

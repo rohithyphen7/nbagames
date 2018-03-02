@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Players;
 use App\Models\Teams;
 use App\Interfaces\TeamInterface;
 /**
@@ -13,6 +14,11 @@ use App\Interfaces\TeamInterface;
 class TeamRepository implements TeamInterface
 {
 
+    /**
+     * @param $teamId
+     * @return mixed
+     * get players and teams on base of team id
+     */
     public function getTeamDetailsWithPlayers($teamId)
     {
         return Teams::find($teamId)->with([
@@ -22,6 +28,12 @@ class TeamRepository implements TeamInterface
         ])->first();
     }
 
+    /**
+     * @param $teamAId
+     * @param $teamBId
+     * @return array
+     * getting two teams data as per the listing of ongoing matches
+     */
     public function getPlayers($teamAId,$teamBId)
     {
         $teamA = $this->getPlayingPlayers($teamAId);
@@ -29,6 +41,11 @@ class TeamRepository implements TeamInterface
         return ['teamA'=>$teamA,'teamB'=>$teamB];
     }
 
+    /**
+     * @param $teamId
+     * relation ship between teams and players are feteched
+     * @return \Illuminate\Database\Eloquent\Model|null|object|static
+     */
     public function getPlayingPlayers($teamId)
     {
         return Teams::with([
@@ -36,5 +53,14 @@ class TeamRepository implements TeamInterface
                 $query->orderBy('players.points', 'desc')->take(5);
             }
         ])->where('teams.id', $teamId)->first();
+    }
+
+    /**
+     * to get the top 20 players
+     * @return mixed
+     */
+    public function getTopPlayers()
+    {
+         return Players::orderBy('points')->take(20)->get();
     }
 }
